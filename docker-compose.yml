@@ -10,13 +10,13 @@ services:
       - ./mysql/db_structure.sql:/docker-entrypoint-initdb.d/db_structure.sql
     restart: always
   app:
+    tty: true
     build:
       context: "./app"
       dockerfile: Dockerfile
     container_name: app-container
     command: >
-      bash -c "python /app/scripts/ingestion.py &&
-      python /app/scripts/app.py"
+      bash -c "python /app/scripts/ingestion.py && python /app/scripts/app.py"
     restart: always
     ports:
       - "9001:9001"

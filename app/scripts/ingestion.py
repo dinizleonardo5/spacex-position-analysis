@@ -28,10 +28,10 @@ def insert_mysql(df:DataFrame, host:str, db:str, table:str, user:str, pw:str):
         sql = f'INSERT INTO {table} ({cols}) VALUES {tuple(row)};'
         try:
             cursor.execute(sql)
-            mydb.commit()
         except Exception as e:
             raise ValueError(e)
         count += 1
+    mydb.commit()
     mydb.close()
     print(f'{count} rows inserted into table {table}!')
 
@@ -41,6 +41,6 @@ def execute_script():
     df_spacex_hst.rename(columns={"spaceTrack_CREATION_DATE": "creation_date"}, inplace=True)
     df_spacex_last_pos = filter_only_last_position(df_spacex_hst, 'id', 'creation_date')
     insert_mysql(df_spacex_hst, 'mysql-container', 'db_spacex', 'starlink_hst', 'root', '123')
-    insert_mysql(df_spacex_last_pos, 'mysql-container', 'db_spacex', 'starklink_last_position', 'root', '123')
+    insert_mysql(df_spacex_last_pos, 'mysql-container', 'db_spacex', 'starlink_last_position', 'root', '123')
 
 execute_script()

@@ -8,10 +8,10 @@ CREATE TABLE IF NOT EXISTS starlink_hst (
   creation_date TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS starklink_last_position (
-  id VARCHAR(25) NOT NULL,
+CREATE TABLE IF NOT EXISTS starlink_last_position (
+  id VARCHAR(25),
   latitude FLOAT,
   longitude FLOAT,
   creation_date TIMESTAMP,
-  PRIMARY KEY (id)
+  INDEX(id)
 );
