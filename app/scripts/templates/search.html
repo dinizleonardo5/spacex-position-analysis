@@ -10,18 +10,32 @@
     </head>
     <body>
         <h1><center>SpaceX - Starlink</center></h1>
+        <h4><center>Search for satellite position...</center></h4>
         <form class="example" method="post" action="" 
          style="margin:auto;max-width:600px">
             <input type="text" placeholder="search by id..." name="idform"></br>
-            <input type="text" placeholder="search by date (format: yyyy-mm-dd)..." name="dateform"></br>
+            <input type="text" placeholder="search by date (format: yyyy-mm-dd)..." name="dateform">
             <button type="submit"><i class="fa fa-search"></i>
             </button>
         </form>
         <p></p>
         <center>
+        {% if error_msg %}
+        <p>You searched for - id: {{idform}} date: {{searched_date}}</p>
+        <p style="color:red">{{error_msg}}</p>
+        {% endif %}
+        {% if no_data %}
+        <p>You searched for - id: {{idform}} date: {{searched_date}}</p>
+        <p style="color:red">{{no_data}}</p>
+        {% endif %}
         {% for item in data %}
             <tr>
-                <td> {{ item }}</td>
+                <td> <h4>Closest data found... (id: {{idform}} date: {{searched_date}})</h1></td></br>
+                <td> <b>id</b>: {{item[0]}} </td></br>
+                <td> <b>latitude</b>: {{item[1]}}</td></br>
+                <td> <b>longitude</b>: {{item[2]}}</td></br>
+                <td> <b>creation_date</b>: {{item[3]}}</td></br>
+                <td> <b>diff days (search date vs found date)</b>: {{item[4]}}</td>
                 </br>
             </tr>
         {% endfor %}

@@ -22,13 +22,25 @@ def search():
     if request.method == "POST":
         form_id = request.form['idform']
         form_date = request.form['dateform']
-        cursor.execute(f"""SELECT id, longitude, latitude, creation_date 
-                           FROM   starlink_hst
-                           WHERE id = '{form_id}'
-                           """) #AND    CAST(creation_date AS DATE) = '{form_date}'
-        conn.commit()
-        db_data = cursor.fetchall()
-        return render_template('search.html', data=db_data)
+        if len(form_date) == 10 and form_date.count('-') == 2:
+            cursor.execute(f"""
+                            SELECT   id, longitude, latitude, creation_date, 
+                                     ABS(DATEDIFF(creation_date, CAST('{form_date}' as DATE))) as diff_days_search_date_x_found_date
+                            FROM     starlink_hst
+                            WHERE    LTRIM(RTRIM(id)) = '{form_id}'
+                            ORDER BY 5,4 DESC
+                            LIMIT    1
+                            """)
+            conn.commit()
+            db_data = cursor.fetchall()
+            if db_data:
+                return render_template('search.html', data=db_data, searched_date=form_date, idform=form_id)
+            else:
+                no_data = 'No data found.'
+                return render_template('search.html', no_data=no_data, searched_date=form_date, idform=form_id)
+        else:
+            error_msg = 'Wrong date format. Make sure your date is in the right format (yyyy-mm-dd)'
+            return render_template('search.html', error_msg=error_msg, searched_date=form_date, idform=form_id)
     return render_template('search.html')
 
 # Create a route decorator

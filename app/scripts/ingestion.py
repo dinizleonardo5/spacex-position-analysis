@@ -39,8 +39,8 @@ def execute_script():
     data_spacex = read_json('app/source/starlink_historical_data.json')
     df_spacex_hst = select_columns_and_remove_duplicates(data_spacex, ['id', 'latitude', 'longitude', 'spaceTrack_CREATION_DATE'])
     df_spacex_hst.rename(columns={"spaceTrack_CREATION_DATE": "creation_date"}, inplace=True)
-    df_spacex_last_pos = filter_only_last_position(df_spacex_hst, 'id', 'creation_date')
+    #df_spacex_last_pos = filter_only_last_position(df_spacex_hst, 'id', 'creation_date')
     insert_mysql(df_spacex_hst, 'mysql-container', 'db_spacex', 'starlink_hst', 'root', '123')
-    insert_mysql(df_spacex_last_pos, 'mysql-container', 'db_spacex', 'starlink_last_position', 'root', '123')
+    #insert_mysql(df_spacex_last_pos, 'mysql-container', 'db_spacex', 'starlink_last_position', 'root', '123')
 
 execute_script()
